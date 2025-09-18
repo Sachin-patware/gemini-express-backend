@@ -3,7 +3,7 @@ import { getModel } from "../lib/geminiClient.js";
 
 const router = express.Router();
 
-// Translation API
+// POST /api/translation
 router.post("/", async (req, res) => {
   try {
     const { text, targetLang } = req.body;
@@ -12,9 +12,7 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Missing text or targetLang" });
     }
 
-    
     const model = getModel("gemini-1.5-flash");
-
     const prompt = `Translate the following text into ${targetLang}:\n\n${text}`;
 
     const result = await model.generateContent(prompt);

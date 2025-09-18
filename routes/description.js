@@ -16,17 +16,24 @@ async function callModelWithRetry(model, prompt, retries = 3, delay = 1000) {
     }
   }
 }
-
 router.post("/", async (req, res) => {
   try {
-    const { product, brief } = req.body;
+    const { product, culture, tone = "engaging" } = req.body;
 
-    if (!product || !brief) {
-      return res.status(400).json({ error: "Missing product name or brief description" });
+    // Input validation
+    if (!product || !culture || !tone) {
+      return res.status(400).json({ 
+        error: "Missing required fields: product, culture, or tone" 
+      });
     }
 
-    const prompt = `Write an attractive product description for the following product: ${product}. 
-Brief description: ${brief}. Make it engaging and persuasive.`;
+    // Build prompt dynamically
+    const prompt = `
+Write an attractive product description for the following product: ${product}.
+Target audience / culture: ${culture}.
+Tone of writing: ${tone}.
+Make it engaging, persuasive, and culturally relevant.
+`;
 
     let result;
     try {
@@ -34,8 +41,8 @@ Brief description: ${brief}. Make it engaging and persuasive.`;
       const model = getModel("gemini-2.5-flash");
       result = await callModelWithRetry(model, prompt);
     } catch (err) {
-      console.warn("⚠️ Flash model overloaded, switching to gemini-1.5:", err.message);
-      // Fallback to gemini-1.5
+      console.warn("⚠️ Flash model overloaded, switching to gemini-2.5:", err.message);
+      // Fallback model
       const fallbackModel = getModel("gemini-2.5");
       result = await callModelWithRetry(fallbackModel, prompt);
     }

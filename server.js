@@ -33,7 +33,7 @@ app.use("/api/translation", translationRoute);
 app.use("/api/storytelling", storytellingRoute);
 app.use("/api/marketing", marketingRoute);
 
-// Health check
+
 app.get("/", (req, res) => res.json({ ok: true, timestamp: Date.now() }));
 
 // Connect MongoDB & start server
