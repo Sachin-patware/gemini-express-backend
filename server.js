@@ -8,8 +8,7 @@ import mongoose from "mongoose";
 import descriptionRoute from "./routes/description.js";
 import translationRoute from "./routes/translation.js";
 import storytellingRoute from "./routes/storytelling.js";
-import marketingRoute from "./routes/marketing.js";
-import logoRoute from "./routes/logo.js";
+import marketingRoute from "./routes/marketing.js"; 
 
 dotenv.config();
 
